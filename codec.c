@@ -19,13 +19,6 @@ int alphanumeric_ind(char ch)
     return -1;
 }
 
-char alphanumeric_char(int ind)
-{
-    /* Returnsthe ind'th charcter in the sorted alphanumeric alphabet. */
-
-    return "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"[ind];
-}
-
 
 char * createCodec (char key[codelen])
 {
@@ -66,7 +59,6 @@ int encode(char * textin, char * textout, int len, char * codec)
 }
 
 
-
 int decode(char * textin, char * textout, int len, char * codec)
 {
     size_t ind;
@@ -74,10 +66,12 @@ int decode(char * textin, char * textout, int len, char * codec)
 
     for (ind = 0; ind < codelen; ind++)
     {
-        reverse_codec[alphanumeric_ind(codec[ind])] = alphanumeric_char(ind);
+        reverse_codec[alphanumeric_ind(codec[ind])] = alphabet[ind];
     }
     
     return encode(textin, textout, len, reverse_codec);
+
+    freecodec(reverse_codec);
 }
 
 
