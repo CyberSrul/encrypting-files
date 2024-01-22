@@ -1,9 +1,12 @@
 compiler    := gcc
 linker      := ar
-flags       := -Wall
+flags       := -Wall -g3
 executables := encode decode
 
 
+
+
+all: $(executables)
 
 encode: encode.o libcodec.so
 	$(compiler) $(flags) -o encode encode.o -L. -l codec

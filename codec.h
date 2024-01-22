@@ -8,4 +8,4 @@
 char * createCodec (char[codelen]);
 int encode(char *, char *, int, char *);
 int decode(char *, char *, int, char *);
-void freecodec(char *); 
+void freecodec(char *);
