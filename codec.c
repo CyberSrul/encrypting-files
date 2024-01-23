@@ -82,3 +82,25 @@ int decode(char * textin, char * textout, int len, char * codec)
     
     return encode(textin, textout, len, revcodec);
 }
+
+
+void ProccesFile(FILE * src, FILE * dst, char * codec, bool encrypt)
+{
+    if (! src || ! dst)
+    {
+        fprintf(stderr, "null file \n");
+        exit(EXIT_FAILURE);
+    }
+
+    int ( * TextProcceser)(char *, char *, int, char *) = (encrypt ? encode : decode);
+    const unsigned int bufflen = 1000;
+    char buffer[1000] = {0};
+    int bytes_read;
+
+    while (0 < (bytes_read = fread(buffer, sizeof(char), bufflen, src)))
+    {
+        TextProcceser(buffer, buffer, bufflen, codec);
+
+        fwrite(buffer, sizeof(char), bytes_read, dst);
+    }
+} 

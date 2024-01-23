@@ -1,16 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "codec.h"
 
 
 int main(int argc, char const *argv[])
 {
-    char * code = createCodec("abcdrEFGHIJKLMetuvwfghijklmnopqNOPQRsxyzABCDSTUVWXY789Z1234560");
-    char txt1[] = "Hello there", txt2[12];
-    encode(txt1, txt2, 12, code);
-    printf("%s \n", txt2);
-    decode(txt2, txt1, 12, code);
-    printf("%s \n", txt1);
+    char * code = createCodec("abcdrEFGHIJKLMhijklmnopqNOPQRsxyzABCDSvwfgXY789Z12TUVWetu34560");
     
+    FILE * src = fopen("test.txt", "rb");
+    FILE * dst = fopen("encrypted.txt", "wb");
 
-    return 0;
+    ProccesFile(src, dst, code, true);
+
+    fclose(src);
+    fclose(dst);
+    return EXIT_SUCCESS;
 }
