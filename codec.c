@@ -39,9 +39,15 @@ char * createCodec (char key[codelen])
 }
 
 
+void freecodec(char * codec)
+{
+    free(codec);
+}
+
+
 int encode(char * textin, char * textout, int len, char * codec)
 {
-    if (! textin || ! textout)
+    if (! textin || ! textout || ! codec)
     {
         fprintf(stderr, "null text \n");
         return -1;
@@ -59,26 +65,20 @@ int encode(char * textin, char * textout, int len, char * codec)
 }
 
 
-int decode(char * textin, char * textout, int len, char * codec)
+void reverseCodec(char * codec, char * revcodec)
 {
-    if (! textin || ! textout)
-    {
-        fprintf(stderr, "null text \n");
-        return -1;
-    }
-
-    char reverse_codec[codelen];
-
     for (size_t ind = 0; ind < codelen; ind++)
     {
-        reverse_codec[alphanumeric_ind(codec[ind])] = alphabet[ind];
+        revcodec[alphanumeric_ind(codec[ind])] = alphabet[ind];
     }
-    
-    return encode(textin, textout, len, reverse_codec);
 }
 
 
-void freecodec(char * codec)
+int decode(char * textin, char * textout, int len, char * codec)
 {
-    free(codec);
+    static char revcodec[codelen] = {0};
+    static char * prevcodec = NULL;
+    if (codec != prevcodec) reverseCodec(codec, revcodec);
+    
+    return encode(textin, textout, len, revcodec);
 }
