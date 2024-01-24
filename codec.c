@@ -89,9 +89,13 @@ void reverseCodec(char * codec, char * revcodec)
 
 int decode(char * textin, char * textout, int len, char * codec)
 {
-    static char revcodec[codelen] = {0};
-    static char * prevcodec = NULL;
-    if (codec != prevcodec) reverseCodec(codec, revcodec);
+    static char revcodec[codelen] = {0}, * prevcodec = NULL;
+
+    if (codec != prevcodec)
+    {
+        reverseCodec(codec, revcodec);
+        prevcodec = codec;
+    }
     
     return encode(textin, textout, len, revcodec);
 }
