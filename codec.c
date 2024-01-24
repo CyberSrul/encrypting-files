@@ -20,6 +20,19 @@ int alphanumeric_ind(char ch)
 }
 
 
+char alphanumeric_char(int ind)
+{
+    /* Returns ind-th char in the sorted alphanumeric alphabet. */
+
+    if (ind < 0 || ind >= codelen) return -1;
+    if (ind < letter_count)        return 'a' + ind;
+    if (ind < 2 * letter_count)    return 'A' + ind - letter_count;
+    if (ind == codelen - 1)        return '0';
+
+    return '1' + ind - 2 * letter_count;
+}
+
+
 char * createCodec (char key[codelen])
 {
     bool checks[codelen] = {0};
@@ -69,7 +82,7 @@ void reverseCodec(char * codec, char * revcodec)
 {
     for (size_t ind = 0; ind < codelen; ind++)
     {
-        revcodec[alphanumeric_ind(codec[ind])] = alphabet[ind];
+        revcodec[alphanumeric_ind(codec[ind])] = alphanumeric_char(ind);
     }
 }
 
@@ -92,14 +105,15 @@ void ProccesFile(FILE * src, FILE * dst, char * codec, bool encrypt)
         exit(EXIT_FAILURE);
     }
 
-    int ( * TextProcceser)(char *, char *, int, char *) = (encrypt ? encode : decode);
     const unsigned int bufflen = 1000;
     char buffer[1000] = {0};
     int bytes_read;
 
+    int ( * method)(char *, char *, int, char *) = (encrypt ? encode : decode);
+
     while (0 < (bytes_read = fread(buffer, sizeof(char), bufflen, src)))
     {
-        TextProcceser(buffer, buffer, bufflen, codec);
+        method(buffer, buffer, bufflen, codec);
 
         fwrite(buffer, sizeof(char), bytes_read, dst);
     }

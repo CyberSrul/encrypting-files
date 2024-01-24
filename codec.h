@@ -2,7 +2,6 @@
 #define letter_count 26
 #define digit_count 10
 #define codelen 62
-#define alphabet "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 #include <stdio.h>
 
 
