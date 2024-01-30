@@ -60,11 +60,8 @@ void freecodec(char * codec)
 
 int encode(char * textin, char * textout, int len, char * codec)
 {
-    if (! textin || ! textout || ! codec)
-    {
-        fprintf(stderr, "null text \n");
-        return -1;
-    }
+    if (! textin || ! textout) return throw("files are not open");
+    if (! codec)               return throw("key is not valid");
 
     char ch = textin[0];
     size_t ind;
@@ -103,14 +100,7 @@ int decode(char * textin, char * textout, int len, char * codec)
 
 void ProccesFile(FILE * src, FILE * dst, char * codec, bool encrypt)
 {
-    if (! src || ! dst)
-    {
-        fprintf(stderr, "null file \n");
-        exit(EXIT_FAILURE);
-    }
-
-    const unsigned int bufflen = 1000;
-    char buffer[1000] = {0};
+    char buffer[bufflen] = {0};
     int bytes_read;
 
     int ( * method)(char *, char *, int, char *) = (encrypt ? encode : decode);
@@ -121,4 +111,4 @@ void ProccesFile(FILE * src, FILE * dst, char * codec, bool encrypt)
 
         fwrite(buffer, sizeof(char), bytes_read, dst);
     }
-} 
+}

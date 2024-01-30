@@ -1,6 +1,6 @@
 compiler    := gcc
 linker      := ar
-flags       := -Wall -g3
+flags       := -Wall
 executables := encode decode
 
 
